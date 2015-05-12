@@ -1,0 +1,12 @@
+werewolfGame
+:appendPlayer
+:nightPhase
+:dayPhase
+:winCondition
+:dead
+
+dice
+
+
+HTML:
+$('.player-info').find('p')
