@@ -2,15 +2,34 @@
 	margin:0px;
 	padding:0px;
 }
+
 body{
 	background: #aaa;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
+/* Attach this class to body for phases*/ 
+.day{
+	background: light-blue;
+}
+.night{
+	background: dark-blue;
+}
 .container{
 	max-width: 1280px;
 	width: 100%;
 	margin:0 auto;
+}
+.metainfo{
+	padding:5px;
+	text-align:center;
+}
+.timer{
+	padding:5px;
+	text-align:center;
+}
+.phase-instruction{
+	text-align:center;
 }
 .player-tile{
 	border:1px solid black;
@@ -18,6 +37,16 @@ body{
 	height: 100px;
 	display:table;
 	position:relative;
+}
+.eliminated:after{
+	content:"";
+	display:block;
+	position: absolute;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	background: rgba(120,25,25,0.8);
 }
 
 .player-tile > div{
