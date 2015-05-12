@@ -1,7 +1,7 @@
 werewolfGame
 :appendPlayer
-:nightPhase
-:dayPhase
+nightPhase
+dayPhase
 :winCondition
 :dead
 
@@ -10,3 +10,26 @@ dice
 
 HTML:
 $('.player-info').find('p')
+
+<!-- <div class="player-tile 1 eliminated">
+      <div class="role-badge mafia"></div>
+      <div class="player-info">
+        <p>Name goes here</p>
+      </div>
+      <div class="votecount"><p>0</p></div>
+    </div>
+
+    <div class="player-tile 2">
+      <div class="role-badge villager"></div>
+      <div class="player-info">
+        <p>Name goes here</p>
+      </div>
+
+      <div class="votecount"><p>0</p></div>
+    </div>
+    <div class="player-tile 3">
+      <div class="role-badge doctor"></div>
+      <div class="player-info">
+        <p>Name goes here</p>
+      </div>
+      <div class="votecount"><p>0</p></div> -->
