@@ -1,6 +1,7 @@
 var numberOfPlayers;
 var playerName;
 var playerRole = []
+var playerVote = -1
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
 var roleCountCap = [0,0,0,0]
@@ -56,7 +57,7 @@ var werewolfGame = {
     },
     nightPhase : function(id) {
         if (playerRole[id].role === "Mafia") {
-            nightPhase.mafiaVote();
+            nightPhase.mafgeiaVote();
         }
         if (playerRole[id].role === "Villager") {
             nightPhase.bubblePop();
@@ -69,7 +70,7 @@ var werewolfGame = {
     winCondition : function() {
         if (roleCountCap[0] === roleCountCap[1]) {
             werewolfGame.mafiaWin();
-        }
+        }   
         else if (roleCountCap[0] === 0) {
             werewolfGame.villagerWin();
         }
@@ -117,7 +118,7 @@ dayPhase = {
 */
 
 villageData.on("child_changed", function(snapshot) {
-  var playerRole = snapshot.val();
+  playerRole = snapshot.val();
   console.log("The updated post title is " + playerRole.title);
 });
 
@@ -150,8 +151,10 @@ var userSelect = function () {
     }
 }
 
+playerName = prompt("What is your name?")
 $('.container').on('click', '.player-tile', userSelect);
 
+$('#test').on("click", werewolfGame.appendPlayer)
 // var updHMain = function (objec) {
 //     objec.forEach( function () {
 //         if 
