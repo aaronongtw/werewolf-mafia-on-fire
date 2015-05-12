@@ -1,5 +1,5 @@
 var numberOfPlayers;
-
+var playerName;
 var playerRole = []
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
@@ -51,7 +51,7 @@ var werewolfGame = {
             }
 
         }
-        playerRole.push({id: playerRole.length, color:colorArray[playerRole.length],role: assignedRole, status:"alive", voteCount: 0 })
+        playerRole.push({name: playerName, id: playerRole.length, color:colorArray[playerRole.length],role: assignedRole, status:"alive", voteCount: 0 })
         villageData.set(playerRole);     
     },
     nightPhase : function(id) {
