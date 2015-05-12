@@ -1,0 +1,6 @@
+werewolfGame
+:appendPlayer
+:nightPhase
+:dayPhase
+
+dice
