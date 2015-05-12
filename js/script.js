@@ -1,6 +1,7 @@
 var numberOfPlayers;
 
-var playerRole = []
+var playerRole = [];
+var playerVote = -1;
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
 var roleCountCap = [0,0,0,0]
@@ -117,7 +118,7 @@ dayPhase = {
 */
 
 villageData.on("child_changed", function(snapshot) {
-  var playerRole = snapshot.val();
+  playerRole = snapshot.val();
   console.log("The updated post title is " + playerRole.title);
 });
 
@@ -135,11 +136,17 @@ var popHMain = function (objec) {
     });
 }
 
+var forceUpdate = function() {
+    villageData.once("value", function(data) {
+      playerRole = data;
+    });
+}
+
 var userSelect = function () {
     //this gets the class atribute of the clicked square
     var fullclass = $(this).attr('class');
 
-    if (parseInt(fullclass[13]) === 1) {
+    if (parseInt(fullclass[13]) === playerVote) {
       console.log("you can't click there")
     } else {
       $(this).children().find('votecount').children().html('1 ----- input incrim');
