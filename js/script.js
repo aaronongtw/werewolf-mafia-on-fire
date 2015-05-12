@@ -78,6 +78,9 @@ var werewolfGame = {
     dead : function() {
         playerRole[id].status = "dead"
         roleCountCap[roleArray.indexOf(playerRole[id].role)] -= 1
+    },
+    update : function() {
+
     }
  }
 nightPhase = {
@@ -103,9 +106,20 @@ dayPhase = {
     }
 }
 
+/*
+     __________                              
+    |__\_____  \  __ __   ___________ ___.__.
+    |  |/  / \  \|  |  \_/ __ \_  __ <   |  |
+    |  /   \_/.  \  |  /\  ___/|  | \/\___  |
+/\__|  \_____\ \_/____/  \___  >__|   / ____|
+\______|      \__>           \/       \/     
 
+*/
 
+villageData.on("value", function(snapshot) {
+  playerRole = snapshot.val();
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
 
-
-
-
+$('.container').on('click')
