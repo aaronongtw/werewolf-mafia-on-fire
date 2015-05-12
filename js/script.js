@@ -64,13 +64,27 @@ var werewolfGame = {
     },
     dayPhase : function() {
         event = "discussion time"
+        dayPhase.allVote();
+    },
+    winCondition : function() {
+        if (roleCountCap[0] === roleCountCap[1]) {
+            werewolfGame.mafiaWin();
+        }
+        else if (roleCountCap[0] === 0) {
+            werewolfGame.villagerWin();
+        }
+
+    },
+    dead : function() {
+        playerRole[id].status = "dead"
+        roleCountCap[roleArray.indexOf(playerRole[id].role)] -= 1
     }
-}
+ }
 nightPhase = {
     mafiaVote : function(id) {
         var timedVote = setTimeOut(werewolfGame.dayPhase, 60000)
-        if (playerRole(id).voteCount === roleCountCap[0]) {
-            playerRole(id).status = "dead"
+        if (playerRole[id].voteCount === roleCountCap[0]) {
+            werewolfGame.dead();
             clearTimeOut(timedVote);
             werewolfGame.DayPhase();
 
@@ -81,7 +95,13 @@ nightPhase = {
 
     }
 }
-
+dayPhase = {
+    allVote : function() {
+        if (playerRole[id].voteCount === Math.ceil(playerRole.length/2)){
+            werewolfGame.dead();
+        }
+    }
+}
 
 
 
