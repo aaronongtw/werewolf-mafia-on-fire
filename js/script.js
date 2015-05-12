@@ -78,11 +78,11 @@ var werewolfGame = {
     dead : function() {
         playerRole[id].status = "dead"
         roleCountCap[roleArray.indexOf(playerRole[id].role)] -= 1
-    },
-    update : function() {
-
     }
- }
+    // update : function() {
+
+    // }
+}
 nightPhase = {
     mafiaVote : function(id) {
         var timedVote = setTimeOut(werewolfGame.dayPhase, 60000)
@@ -116,10 +116,44 @@ dayPhase = {
 
 */
 
-villageData.on("value", function(snapshot) {
-  playerRole = snapshot.val();
-}, function (errorObject) {
-  console.log("The read failed: " + errorObject.code);
+villageData.on("child_changed", function(snapshot) {
+  var playerRole = snapshot.val();
+  console.log("The updated post title is " + playerRole.title);
 });
 
-$('.container').on('click')
+
+
+var popHMain = function (objec) {
+    objec.forEach( function (element, index) {
+        $('.container').append($("<div></div>").addClass('player-tile ' + element.id));
+        $('.player-tile').last().prepend($("<div></div>").addClass(element.role));
+        $('.player-tile').last().append($('<div></div>').addClass('player-info'));
+        $('.player-info').last().append($('<p></p>').html('gary'));
+
+        $('.player-tile').last().append($('<div></div>').addClass('votecount'));
+        $('.votecount').last().append($('<p></p>').html('0'));
+    });
+}
+
+var userSelect = function () {
+    //this gets the class atribute of the clicked square
+    var fullclass = $(this).attr('class');
+
+    if (parseInt(fullclass[13]) === 1) {
+      console.log("you can't click there")
+    } else {
+      $(this).children().find('votecount').children().html('1 ----- input incrim');
+      //console.log(fullclass);
+      inputMat[parseInt(fullclass[13])] = 1;
+      //console.log(fullclass[4]);
+      computerSelect();
+    }
+}
+
+$('.container').on('click', '.player-tile', userSelect);
+
+// var updHMain = function (objec) {
+//     objec.forEach( function () {
+//         if 
+//     })
+// }
