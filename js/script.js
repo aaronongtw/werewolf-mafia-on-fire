@@ -58,7 +58,6 @@ var werewolfGame = {
         }
         list.push({name: playerName, id: list.length, color:colorArray[list.length],role: assignedRole, status:"alive", voteCount: 0 })
         villageData.set(list)
-        getSynchronizedArray(villageData);
         
    
     },
