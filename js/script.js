@@ -64,7 +64,7 @@ var werewolfGame = {
     },
     nightPhase : function(id) {
         if (pRole[id].role === "Mafia") {
-            nightPhase.mafgeiaVote();
+            nightPhase.mafiaVote();
         }
         if (pRole[id].role === "Villager") {
             nightPhase.bubblePop();
@@ -72,6 +72,7 @@ var werewolfGame = {
     },
     dayPhase : function() {
         event = "discussion time"
+        console.log(event)
         dayPhase.allVote();
     },
     winCondition : function() {
@@ -96,12 +97,10 @@ var werewolfGame = {
 }
 nightPhase = {
     mafiaVote : function(id) {
-        var timedVote = setTimeOut(werewolfGame.dayPhase, 60000)
+        countdown(60, werewolfGame.dayPhase)
         if (pRole[id].voteCount === roleCountCap[0]) {
             werewolfGame.dead();
-            clearTimeOut(timedVote);
-            werewolfGame.DayPhase();
-
+            werewolfGame.dayPhase
         }
 
     },
@@ -162,6 +161,19 @@ var forceUpdate = function() {
 //       computerSelect();
 //     }
 // }
+
+var countdown = function(seconds, func) {
+    var sec = seconds
+    $(".timer").html("<p>"+seconds+" seconds remaining</p>")
+    var minusOne = setInterval(function(){
+        sec -= 1
+        $(".timer").html("<p>"+sec+" seconds remaining</p>")
+            if (sec === 0) {
+                clearInterval(minusOne)
+                func();
+            }
+    },1000)
+}
 
 
 
@@ -256,7 +268,7 @@ var upVoteCount = function() {
     console.log(pRole)
     villageDataArray.$set(parseInt($(this).attr('class').split(' ')[1]) ,pRole[parseInt($(this).attr('class').split(' ')[1])]);
     }
-    
+
 }
 
 setInterval(updateList,500)
