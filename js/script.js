@@ -1,6 +1,6 @@
 var numberOfPlayers;
 var playerName;
-var playerRole = []
+var list = []
 var playerVote = -1
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
@@ -16,7 +16,11 @@ var werewolfGame = {
 
     appendPlayer : function() {
         var assignedRole;
-        if (playerRole.length < 4) {
+        if (list === null) {
+            list = [];
+        }
+
+        if (list.length < 4) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 1){
                 roleRandom = 1;
@@ -34,7 +38,7 @@ var werewolfGame = {
             }
 
         }
-        else if (playerRole.length < 6) {
+        else if (list.length < 6) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 2){
                 roleRandom = 1;
@@ -52,14 +56,15 @@ var werewolfGame = {
             }
 
         }
-        villageData.push({name: playerName, id: playerRole.length, color:colorArray[playerRole.length],role: assignedRole, status:"alive", voteCount: 0 })
+        list.push({name: playerName, id: list.length, color:colorArray[list.length],role: assignedRole, status:"alive", voteCount: 0 })
+        villageData.set(list)
    
     },
     nightPhase : function(id) {
-        if (playerRole[id].role === "Mafia") {
+        if (list[id].role === "Mafia") {
             nightPhase.mafgeiaVote();
         }
-        if (playerRole[id].role === "Villager") {
+        if (list[id].role === "Villager") {
             nightPhase.bubblePop();
         }
     },
@@ -77,8 +82,11 @@ var werewolfGame = {
 
     },
     dead : function() {
-        playerRole[id].status = "dead"
-        roleCountCap[roleArray.indexOf(playerRole[id].role)] -= 1
+        list[id].status = "dead"
+        roleCountCap[roleArray.indexOf(list[id].role)] -= 1
+    },
+    removeData : function() {
+        villageData.set([]); 
     }
     // update : function() {
 
@@ -87,7 +95,7 @@ var werewolfGame = {
 nightPhase = {
     mafiaVote : function(id) {
         var timedVote = setTimeOut(werewolfGame.dayPhase, 60000)
-        if (playerRole[id].voteCount === roleCountCap[0]) {
+        if (list[id].voteCount === roleCountCap[0]) {
             werewolfGame.dead();
             clearTimeOut(timedVote);
             werewolfGame.DayPhase();
@@ -101,7 +109,7 @@ nightPhase = {
 }
 dayPhase = {
     allVote : function() {
-        if (playerRole[id].voteCount === Math.ceil(playerRole.length/2)){
+        if (list[id].voteCount === Math.ceil(list.length/2)){
             werewolfGame.dead();
         }
     }
@@ -117,10 +125,6 @@ dayPhase = {
 
 */
 
-villageData.on("child_changed", function(snapshot) {
-  playerRole = snapshot.val();
-  console.log("The updated post");
-});
 
 
 
@@ -136,11 +140,17 @@ var popHMain = function (objec) {
     });
 }
 
+var forceUpdate = function() {
+    villageData.once("value", function(data) {
+      list = data;
+    });
+}
+
 var userSelect = function () {
     //this gets the class atribute of the clicked square
     var fullclass = $(this).attr('class');
 
-    if (parseInt(fullclass[13]) === 1) {
+    if (parseInt(fullclass[13]) === playerVote) {
       console.log("you can't click there")
     } else {
       $(this).children().find('votecount').children().html('1 ----- input incrim');
@@ -151,6 +161,84 @@ var userSelect = function () {
     }
 }
 
+function getSynchronizedArray(villageData) {
+  var list = [];
+  syncChanges(list, villageData);
+  wrapLocalCrudOps(list, villageData);
+  return list;
+}
+
+function syncChanges(list, ref) {
+  ref.on('child_added', function _add(snap, prevChild) {
+    var data = snap.val();
+    data.$id = snap.key(); // assumes data is always an object
+    var pos = positionAfter(list, prevChild);
+    list.splice(pos, 0, data);
+  });
+  ref.on('child_removed', function _remove(snap) {
+    var i = positionFor(list, snap.key());
+    if (i > -1) {
+      list.splice(i, 1);
+    }
+  });
+  ref.on('child_changed', function _change(snap) {
+    var i = positionFor(list, snap.key());
+    if (i > -1) {
+      list[i] = snap.val();
+      list[i].$id = snap.key(); // assumes data is always an object
+    }
+  });
+  ref.on('child_moved', function _move(snap, prevChild) {
+    var curPos = positionFor(list, snap.key());
+    if (curPos > -1) {
+      var data = list.splice(curPos, 1)[0];
+      var newPos = positionAfter(list, prevChild);
+      list.splice(newPos, 0, data);
+    }
+  });
+}
+
+function positionFor(list, key) {
+  for (var i = 0, len = list.length; i < len; i++) {
+    if (list[i].$id === key) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+function positionAfter(list, prevChild) {
+  if (prevChild === null) {
+    return 0;
+  } else {
+    var i = positionFor(list, prevChild);
+    if (i === -1) {
+      return list.length;
+    } else {
+      return i + 1;
+    }
+  }
+}
+
+function wrapLocalCrudOps(list, villageData) {
+    // we can hack directly on the array to provide some convenience methods
+    list.$add = function(data) {
+      return villageData.push(data);
+    };
+    list.$remove = function(key) {
+      villageData.child(key).remove();
+    };
+    list.$set = function(key, newData) {
+      // make sure we don't accidentally push our $id prop
+      if (newData.hasOwnProperty('$id')) {
+        delete newData.$id;
+      }
+      villageData.child(key).set(newData);
+    };
+    list.$indexOf = function(key) {
+      return positionFor(list, key); // positionFor in examples above
+    }
+  }
 
 
 playerName = prompt("What is your name?")
