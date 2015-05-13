@@ -61,7 +61,7 @@ var werewolfGame = {
 
 
         villageDataArray.$set(pRole.length, {id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0});
-        popHMain(list);
+
 
     },
     nightPhase : function(id) {
@@ -131,8 +131,8 @@ dayPhase = {
 
 
 
-var popHMain = function (objec) {
-    objec.forEach( function (element, index) {
+var popHMain = function () {
+    list.forEach( function (element, index) {
         $('.container').append($("<div></div>").addClass('player-tile ' + element.id));
         $('.player-tile').last().prepend($("<div></div>").addClass('role-badge ' + element.role));
         $('.player-tile').last().append($('<div></div>').addClass('player-info'));
@@ -166,18 +166,25 @@ var reflowHMain = function (objec) {
 //     }
 // }
 
-var countdown = function(seconds, func) {
+var consoleLogging = function() {
+    console.log("logging")
+}
+
+var countdown = function(seconds, funct) {
     var sec = seconds
     $(".timer").html("<p>"+seconds+" seconds remaining</p>")
     var minusOne = setInterval(function(){
         sec -= 1
         $(".timer").html("<p>"+sec+" seconds remaining</p>")
             if (sec === 0) {
-                clearInterval(minusOne)
-                func();
+                nFunc = funct
+                nFunc();
+                clearInterval(minusOne);
             }
     },1000)
 }
+
+
 
 var updateList = function() {
     list = getSynchronizedArray(villageData);
@@ -281,7 +288,7 @@ var upVoteCount = function() {
     }
 
 }
-
+updateList();
 setInterval(updateList,500)
 playerName = prompt("What is your name?")
 $('.container').on('click', '.player-tile', upVoteCount);
@@ -293,3 +300,6 @@ $('.player-tile').on("click", upVoteCount)
 //         if 
 //     })
 // }
+// 
+
+countdown(5,popHMain);
