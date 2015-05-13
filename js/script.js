@@ -1,7 +1,7 @@
 var numberOfPlayers;
-
-var playerRole = [];
-var playerVote = -1;
+var playerName;
+var playerRole = []
+var playerVote = -1
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
 var roleCountCap = [0,0,0,0]
@@ -16,6 +16,10 @@ var werewolfGame = {
 
     appendPlayer : function() {
         var assignedRole;
+        if (playerRole === null) {
+            playerRole = [];
+        }
+
         if (playerRole.length < 4) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 1){
@@ -52,12 +56,12 @@ var werewolfGame = {
             }
 
         }
-        playerRole.push({id: playerRole.length, color:colorArray[playerRole.length],role: assignedRole, status:"alive", voteCount: 0 })
+        playerRole.push({name: playerName, id: playerRole.length, color:colorArray[playerRole.length],role: assignedRole, status:"alive", voteCount: 0 })
         villageData.set(playerRole);     
     },
     nightPhase : function(id) {
         if (playerRole[id].role === "Mafia") {
-            nightPhase.mafiaVote();
+            nightPhase.mafgeiaVote();
         }
         if (playerRole[id].role === "Villager") {
             nightPhase.bubblePop();
@@ -70,7 +74,7 @@ var werewolfGame = {
     winCondition : function() {
         if (roleCountCap[0] === roleCountCap[1]) {
             werewolfGame.mafiaWin();
-        }
+        }   
         else if (roleCountCap[0] === 0) {
             werewolfGame.villagerWin();
         }
@@ -79,6 +83,9 @@ var werewolfGame = {
     dead : function() {
         playerRole[id].status = "dead"
         roleCountCap[roleArray.indexOf(playerRole[id].role)] -= 1
+    },
+    removeData : function() {
+        villageData.set([]); 
     }
     // update : function() {
 
@@ -117,9 +124,9 @@ dayPhase = {
 
 */
 
-villageData.on("child_changed", function(snapshot) {
-  playerRole = snapshot.val();
-  console.log("The updated post title is " + playerRole.title);
+villageData.on("child_added", function(snapshot) {
+  playerRole = (snapshot.val());
+  console.log("The updated post title is ");
 });
 
 
@@ -157,8 +164,10 @@ var userSelect = function () {
     }
 }
 
+playerName = prompt("What is your name?")
 $('.container').on('click', '.player-tile', userSelect);
 
+$('#test').on("click", werewolfGame.appendPlayer)
 // var updHMain = function (objec) {
 //     objec.forEach( function () {
 //         if 
