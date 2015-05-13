@@ -58,6 +58,8 @@ var werewolfGame = {
         }
         list.push({name: playerName, id: list.length, color:colorArray[list.length],role: assignedRole, status:"alive", voteCount: 0 })
         villageData.set(list)
+        getSynchronizedArray(villageData);
+        
    
     },
     nightPhase : function(id) {
@@ -160,6 +162,8 @@ var userSelect = function () {
       computerSelect();
     }
 }
+
+setInterval(getSynchronizedArray(villageData),500)
 
 function getSynchronizedArray(villageData) {
   var list = [];
