@@ -8,6 +8,7 @@ var roleArray = ['mafia','villager','doctor', 'inspector']
 var roleCountCap = [0,0,0,0]
 var extraRole = ['Vigilante', 'Barman']
 var villageData = new Firebase("https://glowing-heat-4029.firebaseio.com");
+var villageDataArray = getSynchronizedArray(villageData);
 
 var dice = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -57,7 +58,8 @@ var werewolfGame = {
             }
 
         }
-        villageData.push({id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0});
+        villageDataArray.$set(pRole.length, {id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0});
+        popHMain(list);
         
     },
     nightPhase : function(id) {
@@ -247,14 +249,14 @@ function wrapLocalCrudOps(list, villageData) {
   }
 
 var upVoteCount = function() {
-    console.log("degubsadf")
-    console.log(list[parseInt($(this).attr('class').split(' ')[1])])
-    if (playerVote < 0 && list[parseInt($(this).attr('class').split(' ')[1])].name !== playerName ) {
-    list[parseInt($(this).attr('class').split(' ')[1])].voteCount += 1;
+    pRole = list
+    if (playerVote < 0 && pRole[parseInt($(this).attr('class').split(' ')[1])].name !== playerName ) {
+    pRole[parseInt($(this).attr('class').split(' ')[1])].voteCount += 1;
     playerVote += 1;
-    console.log(list)
-    villageData.set(list)
+    console.log(pRole)
+    villageDataArray.$set(parseInt($(this).attr('class').split(' ')[1]) ,pRole[parseInt($(this).attr('class').split(' ')[1])]);
     }
+    
 }
 
 setInterval(updateList,500)
