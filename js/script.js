@@ -2,7 +2,7 @@ var numberOfPlayers;
 var playerName;
 var playerRole;
 var pRole = [];
-var playerVote = -1
+var playerVote = -1;
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
 var roleCountCap = [0,0,0,0]
@@ -20,6 +20,7 @@ var werewolfGame = {
         list.forEach(function(value) {
             delete value['$id']
         })
+        pRole = list
         if (pRole.length < 4) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 1){
@@ -57,9 +58,7 @@ var werewolfGame = {
 
         }
 
-        playerRole = {id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0}
-        pRole.push(playerRole)
-        villageData.set(pRole);
+        villageData.push({id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0});
 
     },
     nightPhase : function(id) {
@@ -135,8 +134,7 @@ var popHMain = function (objec) {
         $('.container').append($("<div></div>").addClass('player-tile ' + element.id));
         $('.player-tile').last().prepend($("<div></div>").addClass(element.role));
         $('.player-tile').last().append($('<div></div>').addClass('player-info'));
-        $('.player-info').last().append($('<p></p>').html('gary'));
-
+        $('.player-info').last().append($('<p></p>').html(element.name));
         $('.player-tile').last().append($('<div></div>').addClass('votecount'));
         $('.votecount').last().append($('<p></p>').html('0'));
     });
