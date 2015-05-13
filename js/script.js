@@ -61,7 +61,6 @@ var werewolfGame = {
 
 
         villageDataArray.$set(pRole.length, {id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0});
-        popHMain(list);
 
     },
     nightPhase : function(id) {
@@ -148,6 +147,7 @@ var reflowHMain = function (objec) {
             $('.' + element.id).addClass('eliminated');
         }
         $('.' + element.id).find('.votecount').children().html( element.voteCount );
+
     })
 }
 
@@ -166,7 +166,7 @@ var reflowHMain = function (objec) {
 //     }
 // }
 
-var countdown = function(seconds, func) {
+var countdown = function(seconds, func ) {
     var sec = seconds
     $(".timer").html("<p>"+seconds+" seconds remaining</p>")
     var minusOne = setInterval(function(){
@@ -174,7 +174,7 @@ var countdown = function(seconds, func) {
         $(".timer").html("<p>"+sec+" seconds remaining</p>")
             if (sec === 0) {
                 clearInterval(minusOne)
-                func();
+                popHMain(list);
             }
     },1000)
 }
@@ -285,6 +285,10 @@ var upVoteCount = function() {
 setInterval(updateList,500)
 playerName = prompt("What is your name?")
 $('.container').on('click', '.player-tile', upVoteCount);
+
+updateList();
+countdown(10, popHMain(list));
+
 
 $('#test').on("click", werewolfGame.appendPlayer)
 $('.player-tile').on("click", upVoteCount)
