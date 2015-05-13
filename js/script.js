@@ -143,10 +143,18 @@ var popHMain = function (objec) {
     });
 }
 
-
+var reflowHMain = function (objec) {
+    objec.forEach( function (element, index) {
+        if (element.status === 'dead')  { 
+            $('.' + element.id).addClass('eliminated');
+        }
+        $('.' + element.id).find('.votecount').children().html( element.voteCount );
+    })
+}
 
 var updateList = function() {
     list = getSynchronizedArray(villageData);
+    reflowHMain(list);
 }
 
 function getSynchronizedArray(villageData) {
