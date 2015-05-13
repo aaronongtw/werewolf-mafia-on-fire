@@ -20,6 +20,7 @@ var werewolfGame = {
         list.forEach(function(value) {
             delete value['$id']
         })
+        pRole = list
         if (pRole.length < 4) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 1){
@@ -56,9 +57,8 @@ var werewolfGame = {
             }
 
         }
-        playerRole = {id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0}
-        pRole.push(playerRole)
-        villageData.set(pRole);
+        villageData.push({id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0});
+        
     },
     nightPhase : function(id) {
         if (pRole[id].role === "Mafia") {
