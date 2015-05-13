@@ -66,7 +66,7 @@ var werewolfGame = {
     },
     nightPhase : function(id) {
         if (pRole[id].role === "Mafia") {
-            nightPhase.mafgeiaVote();
+            nightPhase.mafiaVote();
         }
         if (pRole[id].role === "Villager") {
             nightPhase.bubblePop();
@@ -74,6 +74,7 @@ var werewolfGame = {
     },
     dayPhase : function() {
         event = "discussion time"
+        console.log(event)
         dayPhase.allVote();
     },
     winCondition : function() {
@@ -98,12 +99,10 @@ var werewolfGame = {
 }
 nightPhase = {
     mafiaVote : function(id) {
-        var timedVote = setTimeOut(werewolfGame.dayPhase, 60000)
+        countdown(60, werewolfGame.dayPhase)
         if (pRole[id].voteCount === roleCountCap[0]) {
             werewolfGame.dead();
-            clearTimeOut(timedVote);
-            werewolfGame.DayPhase();
-
+            werewolfGame.dayPhase
         }
 
     },
@@ -150,6 +149,34 @@ var reflowHMain = function (objec) {
         }
         $('.' + element.id).find('.votecount').children().html( element.voteCount );
     })
+}
+
+// var userSelect = function () {
+//     //this gets the class atribute of the clicked square
+//     var fullclass = $(this).attr('class');
+
+//     if (parseInt(fullclass[13]) === playerVote) {
+//       console.log("you can't click there")
+//     } else {
+//       $(this).children().find('votecount').children().html('1 ----- input incrim');
+//       //console.log(fullclass);
+//       inputMat[parseInt(fullclass[13])] = 1;
+//       //console.log(fullclass[4]);
+//       computerSelect();
+//     }
+// }
+
+var countdown = function(seconds, func) {
+    var sec = seconds
+    $(".timer").html("<p>"+seconds+" seconds remaining</p>")
+    var minusOne = setInterval(function(){
+        sec -= 1
+        $(".timer").html("<p>"+sec+" seconds remaining</p>")
+            if (sec === 0) {
+                clearInterval(minusOne)
+                func();
+            }
+    },1000)
 }
 
 var updateList = function() {
@@ -252,7 +279,7 @@ var upVoteCount = function() {
     console.log(pRole)
     villageDataArray.$set(parseInt($(this).attr('class').split(' ')[1]) ,pRole[parseInt($(this).attr('class').split(' ')[1])]);
     }
-    
+
 }
 
 setInterval(updateList,500)
