@@ -1,6 +1,7 @@
 var numberOfPlayers;
 var playerName;
-var pRole = []
+var playerRole;
+var pRole = [];
 var playerVote = -1
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
@@ -16,10 +17,9 @@ var werewolfGame = {
 
     appendPlayer : function() {
         var assignedRole;
-        if (pRole === null) {
-            pRole = [];
-        }
-
+        list.forEach(function(value) {
+            delete value['$id']
+        })
         if (pRole.length < 4) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 1){
@@ -56,11 +56,9 @@ var werewolfGame = {
             }
 
         }
-        pRole.push({name: playerName, id: pRole.length, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0 })
-        villageData.set(pRole)
-        getSynchronizedArray(villageData);
-        
-   
+        playerRole = {id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0}
+        pRole.push(playerRole)
+        villageData.set(pRole);
     },
     nightPhase : function(id) {
         if (pRole[id].role === "Mafia") {
