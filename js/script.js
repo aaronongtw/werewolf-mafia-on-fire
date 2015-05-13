@@ -1,6 +1,6 @@
 var numberOfPlayers;
 var playerName;
-var list = []
+var pRole = []
 var playerVote = -1
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
@@ -16,11 +16,11 @@ var werewolfGame = {
 
     appendPlayer : function() {
         var assignedRole;
-        if (list === null) {
-            list = [];
+        if (pRole === null) {
+            pRole = [];
         }
 
-        if (list.length < 4) {
+        if (pRole.length < 4) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 1){
                 roleRandom = 1;
@@ -38,7 +38,7 @@ var werewolfGame = {
             }
 
         }
-        else if (list.length < 6) {
+        else if (pRole.length < 6) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 2){
                 roleRandom = 1;
@@ -56,16 +56,18 @@ var werewolfGame = {
             }
 
         }
-        list.push({name: playerName, id: list.length, color:colorArray[list.length],role: assignedRole, status:"alive", voteCount: 0 })
-        villageData.set(list)
+
+        pRole.push({name: playerName, id: pRole.length, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0 })
+        villageData.set(pRole)
+        getSynchronizedArray(villageData);
         
    
     },
     nightPhase : function(id) {
-        if (list[id].role === "Mafia") {
+        if (pRole[id].role === "Mafia") {
             nightPhase.mafgeiaVote();
         }
-        if (list[id].role === "Villager") {
+        if (pRole[id].role === "Villager") {
             nightPhase.bubblePop();
         }
     },
@@ -83,8 +85,8 @@ var werewolfGame = {
 
     },
     dead : function() {
-        list[id].status = "dead"
-        roleCountCap[roleArray.indexOf(list[id].role)] -= 1
+        pRole[id].status = "dead"
+        roleCountCap[roleArray.indexOf(pRole[id].role)] -= 1
     },
     removeData : function() {
         villageData.set([]); 
@@ -96,7 +98,7 @@ var werewolfGame = {
 nightPhase = {
     mafiaVote : function(id) {
         var timedVote = setTimeOut(werewolfGame.dayPhase, 60000)
-        if (list[id].voteCount === roleCountCap[0]) {
+        if (pRole[id].voteCount === roleCountCap[0]) {
             werewolfGame.dead();
             clearTimeOut(timedVote);
             werewolfGame.DayPhase();
@@ -110,7 +112,7 @@ nightPhase = {
 }
 dayPhase = {
     allVote : function() {
-        if (list[id].voteCount === Math.ceil(list.length/2)){
+        if (pRole[id].voteCount === Math.ceil(pRole.length/2)){
             werewolfGame.dead();
         }
     }
@@ -162,7 +164,11 @@ var userSelect = function () {
     }
 }
 
-setInterval(getSynchronizedArray(villageData),500)
+
+
+var updateList = function() {
+    list = getSynchronizedArray(villageData);
+}
 
 function getSynchronizedArray(villageData) {
   var list = [];
@@ -243,7 +249,7 @@ function wrapLocalCrudOps(list, villageData) {
     }
   }
 
-
+setInterval(updateList,500)
 playerName = prompt("What is your name?")
 $('.container').on('click', '.player-tile', userSelect);
 
