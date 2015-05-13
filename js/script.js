@@ -9,6 +9,7 @@ var roleCountCap = [0,0,0,0]
 var extraRole = ['Vigilante', 'Barman']
 var villageData = new Firebase("https://glowing-heat-4029.firebaseio.com");
 var villageDataArray = getSynchronizedArray(villageData);
+var pID;
 
 var dice = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -63,11 +64,12 @@ var werewolfGame = {
         villageDataArray.$set(pRole.length, {id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0});
 
     },
-    nightPhase : function(id) {
-        if (pRole[id].role === "Mafia") {
+    nightPhase : function() {
+        pRole = list
+        if (pRole[pID].role === "mafia") {
             nightPhase.mafiaVote();
         }
-        if (pRole[id].role === "Villager") {
+        if (pRole[pID].role === "villager") {
             nightPhase.bubblePop();
         }
     },
@@ -86,8 +88,9 @@ var werewolfGame = {
 
     },
     dead : function() {
-        pRole[id].status = "dead"
-        roleCountCap[roleArray.indexOf(pRole[id].role)] -= 1
+        pRole = list
+        pRole[pID].status = "dead"
+        roleCountCap[roleArray.indexOf(pRole[pID].role)] -= 1
     },
     removeData : function() {
         villageData.set([]); 
@@ -97,22 +100,27 @@ var werewolfGame = {
     // }
 }
 nightPhase = {
-    mafiaVote : function(id) {
+    mafiaVote : function() {
+        pRole = list
         countdown(60, werewolfGame.dayPhase)
-        if (pRole[id].voteCount === roleCountCap[0]) {
+        console.log("you are mafia")
+        if (pRole[pID].voteCount === roleCountCap[0]) {
             werewolfGame.dead();
             werewolfGame.dayPhase
         }
 
     },
     bubblePop : function() {
-
+        console.log("play some bubblePop")
+        countdown(60, werewolfGame.dayPhase)
     }
 }
 dayPhase = {
     allVote : function() {
-        if (pRole[id].voteCount === Math.ceil(pRole.length/2)){
+        pRole = list
+        if (pRole[pID].voteCount === Math.ceil(pRole.length/2)){
             werewolfGame.dead();
+        countdown(werewolfGame.nightPhase)
         }
     }
 }
@@ -135,10 +143,11 @@ var popHMain = function () {
         $('.container').append($("<div></div>").addClass('player-tile ' + element.id));
         $('.player-tile').last().prepend($("<div></div>").addClass('role-badge ' + element.role));
         $('.player-tile').last().append($('<div></div>').addClass('player-info'));
-        $('.player-info').last().append($('<p></p>').html(element.name));
+        $('.player-info').last().append($('<p></p>').html(element.name)).addClass(element.name);
         $('.player-tile').last().append($('<div></div>').addClass('votecount'));
         $('.votecount').last().append($('<p></p>').html(element.voteCount));
     });
+    pID = $('.container').find('.'+playerName).parent().attr('class').split(' ')[1]
 }
 
 var reflowHMain = function (objec) {
@@ -166,6 +175,7 @@ var reflowHMain = function (objec) {
 //     }
 // }
 
+
 var countdown = function(seconds, funct) {
     var sec = seconds
     $(".timer").html("<p>"+seconds+" seconds remaining</p>")
@@ -173,7 +183,7 @@ var countdown = function(seconds, funct) {
         sec -= 1
         $(".timer").html("<p>"+sec+" seconds remaining</p>")
             if (sec === 0) {
-                nFunc = funct
+                var nFunc = funct
                 nFunc();
                 clearInterval(minusOne);
             }
@@ -284,6 +294,16 @@ var upVoteCount = function() {
     }
 
 }
+
+var startGame = function() {
+    werewolfGame.nightPhase();
+    if (pID = 'villager') {
+        tictac.js
+    }
+}
+
+
+
 updateList();
 setInterval(updateList,500)
 playerName = prompt("What is your name?")
@@ -298,5 +318,6 @@ $('.player-tile').on("click", upVoteCount)
 // }
 // 
 
+
 countdown(15,popHMain);
-countdown(30,startGame);
+countdown(20,startGame)
