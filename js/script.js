@@ -130,8 +130,8 @@ dayPhase = {
 
 
 
-var popHMain = function (objec) {
-    objec.forEach( function (element, index) {
+var popHMain = function () {
+    list.forEach( function (element, index) {
         $('.container').append($("<div></div>").addClass('player-tile ' + element.id));
         $('.player-tile').last().prepend($("<div></div>").addClass('role-badge ' + element.role));
         $('.player-tile').last().append($('<div></div>').addClass('player-info'));
@@ -166,18 +166,21 @@ var reflowHMain = function (objec) {
 //     }
 // }
 
-var countdown = function(seconds, func ) {
+var countdown = function(seconds, funct) {
     var sec = seconds
     $(".timer").html("<p>"+seconds+" seconds remaining</p>")
     var minusOne = setInterval(function(){
         sec -= 1
         $(".timer").html("<p>"+sec+" seconds remaining</p>")
             if (sec === 0) {
-                clearInterval(minusOne)
-                popHMain(list);
+                nFunc = funct
+                nFunc();
+                clearInterval(minusOne);
             }
     },1000)
 }
+
+
 
 var updateList = function() {
     list = getSynchronizedArray(villageData);
@@ -281,14 +284,10 @@ var upVoteCount = function() {
     }
 
 }
-
+updateList();
 setInterval(updateList,500)
 playerName = prompt("What is your name?")
 $('.container').on('click', '.player-tile', upVoteCount);
-
-updateList();
-countdown(10, popHMain(list));
-
 
 $('#test').on("click", werewolfGame.appendPlayer)
 $('.player-tile').on("click", upVoteCount)
@@ -297,3 +296,7 @@ $('.player-tile').on("click", upVoteCount)
 //         if 
 //     })
 // }
+// 
+
+countdown(15,popHMain);
+countdown(30,startGame);
