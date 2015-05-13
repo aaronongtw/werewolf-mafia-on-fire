@@ -16,6 +16,10 @@ var werewolfGame = {
 
     appendPlayer : function() {
         var assignedRole;
+        if (playerRole === null) {
+            playerRole = [];
+        }
+
         if (playerRole.length < 4) {
             roleRandom = dice(0,1)
             if (roleCountCap[0] === 1){
@@ -79,6 +83,9 @@ var werewolfGame = {
     dead : function() {
         playerRole[id].status = "dead"
         roleCountCap[roleArray.indexOf(playerRole[id].role)] -= 1
+    },
+    removeData : function() {
+        villageData.set([]); 
     }
     // update : function() {
 
@@ -117,9 +124,9 @@ dayPhase = {
 
 */
 
-villageData.on("child_changed", function(snapshot) {
-  playerRole = snapshot.val();
-  console.log("The updated post title is " + playerRole.title);
+villageData.on("child_added", function(snapshot) {
+  playerRole = (snapshot.val());
+  console.log("The updated post title is ");
 });
 
 
@@ -136,11 +143,17 @@ var popHMain = function (objec) {
     });
 }
 
+var forceUpdate = function() {
+    villageData.once("value", function(data) {
+      playerRole = data;
+    });
+}
+
 var userSelect = function () {
     //this gets the class atribute of the clicked square
     var fullclass = $(this).attr('class');
 
-    if (parseInt(fullclass[13]) === 1) {
+    if (parseInt(fullclass[13]) === playerVote) {
       console.log("you can't click there")
     } else {
       $(this).children().find('votecount').children().html('1 ----- input incrim');
