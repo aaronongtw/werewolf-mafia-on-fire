@@ -4,7 +4,7 @@ var playerRole;
 var pRole = [];
 var playerVote = -1;
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
-var roleArray = ['Mafia','Villager','Doctor', 'Inspector']
+var roleArray = ['mafia','villager','doctor', 'inspector']
 var roleCountCap = [0,0,0,0]
 var extraRole = ['Vigilante', 'Barman']
 var villageData = new Firebase("https://glowing-heat-4029.firebaseio.com");
@@ -132,35 +132,13 @@ dayPhase = {
 var popHMain = function (objec) {
     objec.forEach( function (element, index) {
         $('.container').append($("<div></div>").addClass('player-tile ' + element.id));
-        $('.player-tile').last().prepend($("<div></div>").addClass(element.role));
+        $('.player-tile').last().prepend($("<div></div>").addClass('role-badge ' + element.role));
         $('.player-tile').last().append($('<div></div>').addClass('player-info'));
         $('.player-info').last().append($('<p></p>').html(element.name));
         $('.player-tile').last().append($('<div></div>').addClass('votecount'));
-        $('.votecount').last().append($('<p></p>').html('0'));
+        $('.votecount').last().append($('<p></p>').html(element.voteCount));
     });
 }
-
-var forceUpdate = function() {
-    villageData.once("value", function(data) {
-      list = data;
-    });
-}
-
-var userSelect = function () {
-    //this gets the class atribute of the clicked square
-    var fullclass = $(this).attr('class');
-
-    if (parseInt(fullclass[13]) === playerVote) {
-      console.log("you can't click there")
-    } else {
-      $(this).children().find('votecount').children().html('1 ----- input incrim');
-      //console.log(fullclass);
-      inputMat[parseInt(fullclass[13])] = 1;
-      //console.log(fullclass[4]);
-      computerSelect();
-    }
-}
-
 
 
 var updateList = function() {
@@ -244,13 +222,31 @@ function wrapLocalCrudOps(list, villageData) {
     list.$indexOf = function(key) {
       return positionFor(list, key); // positionFor in examples above
     }
-  }
+}
+
+var getPushable = function() {
+    list.forEach( function (element, index) {
+        delete element.$id;
+    })
+    return list;
+}
+
+var upVoteCount = function() {
+    console.log(list[parseInt($(this).attr('class').split(' ')[1])])
+    if (playerVote < 0 && list[parseInt($(this).attr('class').split(' ')[1])].name !== playerName ) {
+    list[parseInt($(this).attr('class').split(' ')[1])].voteCount += 1;
+    playerVote += 1;
+    console.log(list)
+    villageData.set(getPushable())
+    }
+}
 
 setInterval(updateList,500)
 playerName = prompt("What is your name?")
-$('.container').on('click', '.player-tile', userSelect);
+$('.container').on('click', '.player-tile', upVoteCount);
 
 $('#test').on("click", werewolfGame.appendPlayer)
+$('.player-tile').on("click", upVoteCount)
 // var updHMain = function (objec) {
 //     objec.forEach( function () {
 //         if 
