@@ -143,7 +143,7 @@ nightPhase = {
   },
   bubblePop: function() {
     phase = "night"
-    console.log("play some bubblePop")
+    tictac();
     countdown(60, werewolfGame.checkDeath)
   }
 }
@@ -193,13 +193,15 @@ var popHMain = function() {
   pID = $('.container').find('.' + playerName).parent().attr('class').split(' ')[1]
 }
 
+
 var reflowHMain = function(objec) {
-  objec.forEach(function(element, index) {
+  objec.forEach(function (element, index) {
     if (element.status === 'dead') {
       $('.' + element.id).addClass('eliminated');
     }
     $('.' + element.id).find('.votecount').children().html(element.voteCount);
   })
+
 }
 
 // var userSelect = function () {
@@ -216,7 +218,6 @@ var reflowHMain = function(objec) {
 //       computerSelect();
 //     }
 // }
-
 
 
 var countdown = function(seconds, funct) {
@@ -344,7 +345,9 @@ var upVoteCount = function() {
 }
 
 var startGame = function() {
+
   werewolfGame.nightPhase();
+
 }
 
 
@@ -363,6 +366,5 @@ $('.player-tile').on("click", upVoteCount)
   // }
   // 
 
-
 countdown(15, popHMain);
-countdown(20, startGame)
+countdown(20, startGame);
