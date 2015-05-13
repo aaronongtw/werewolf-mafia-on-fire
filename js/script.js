@@ -2,7 +2,7 @@ var numberOfPlayers;
 var playerName;
 var playerRole;
 var pRole = [];
-var playerVote = -1
+var playerVote = -1;
 var colorArray = ['red','blue','green','pink','brown','black','yellow','orange','purple','grey']
 var roleArray = ['mafia','villager','doctor', 'inspector']
 var roleCountCap = [0,0,0,0]
@@ -58,9 +58,11 @@ var werewolfGame = {
             }
 
         }
+
+
         villageDataArray.$set(pRole.length, {id: pRole.length, name: playerName, color:colorArray[pRole.length],role: assignedRole, status:"alive", voteCount: 0});
         popHMain(list);
-        
+
     },
     nightPhase : function(id) {
         if (pRole[id].role === "Mafia") {
@@ -132,19 +134,21 @@ dayPhase = {
 var popHMain = function (objec) {
     objec.forEach( function (element, index) {
         $('.container').append($("<div></div>").addClass('player-tile ' + element.id));
-        $('.player-tile').last().prepend($("<div></div>").addClass(element.role));
+        $('.player-tile').last().prepend($("<div></div>").addClass('role-badge ' + element.role));
         $('.player-tile').last().append($('<div></div>').addClass('player-info'));
         $('.player-info').last().append($('<p></p>').html(element.name));
-
         $('.player-tile').last().append($('<div></div>').addClass('votecount'));
         $('.votecount').last().append($('<p></p>').html(element.voteCount));
     });
 }
 
-var forceUpdate = function() {
-    villageData.once("value", function(data) {
-      list = data;
-    });
+var reflowHMain = function (objec) {
+    objec.forEach( function (element, index) {
+        if (element.status === 'dead')  { 
+            $('.' + element.id).addClass('eliminated');
+        }
+        $('.' + element.id).find('.votecount').children().html( element.voteCount );
+    })
 }
 
 // var userSelect = function () {
@@ -175,10 +179,9 @@ var countdown = function(seconds, func) {
     },1000)
 }
 
-
-
 var updateList = function() {
     list = getSynchronizedArray(villageData);
+    reflowHMain(list);
 }
 
 function getSynchronizedArray(villageData) {
@@ -258,9 +261,17 @@ function wrapLocalCrudOps(list, villageData) {
     list.$indexOf = function(key) {
       return positionFor(list, key); // positionFor in examples above
     }
-  }
+}
+
+var getPushable = function() {
+    list.forEach( function (element, index) {
+        delete element.$id;
+    })
+    return list;
+}
 
 var upVoteCount = function() {
+
     pRole = list
     if (playerVote < 0 && pRole[parseInt($(this).attr('class').split(' ')[1])].name !== playerName ) {
     pRole[parseInt($(this).attr('class').split(' ')[1])].voteCount += 1;
