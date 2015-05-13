@@ -52,8 +52,8 @@ var werewolfGame = {
             }
 
         }
-        playerRole.push({name: playerName, id: playerRole.length, color:colorArray[playerRole.length],role: assignedRole, status:"alive", voteCount: 0 })
-        villageData.set(playerRole);     
+        villageData.push({name: playerName, id: playerRole.length, color:colorArray[playerRole.length],role: assignedRole, status:"alive", voteCount: 0 })
+   
     },
     nightPhase : function(id) {
         if (playerRole[id].role === "Mafia") {
@@ -119,7 +119,7 @@ dayPhase = {
 
 villageData.on("child_changed", function(snapshot) {
   playerRole = snapshot.val();
-  console.log("The updated post title is " + playerRole.title);
+  console.log("The updated post");
 });
 
 
@@ -150,6 +150,8 @@ var userSelect = function () {
       computerSelect();
     }
 }
+
+
 
 playerName = prompt("What is your name?")
 $('.container').on('click', '.player-tile', userSelect);
