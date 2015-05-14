@@ -83,7 +83,7 @@ var werewolfGame = {
       });
     },
     nightPhase: function() {
-        werewolfGame.winCondition();
+      werewolfGame.winCondition();
       pRole = list;
       $('.body').addClass(' night');
       $('#phase').html("Phase: Night");
@@ -225,6 +225,7 @@ var popHMain = function() {
     $('.player-info').last().append($('<p></p>').html(element.name)).addClass(element.name);
     $('.player-tile').last().append($('<div></div>').addClass('votecount'));
     $('.votecount').last().append($('<p></p>').html(element.voteCount));
+    $('.' + element.id).css(color: element.color); 
   });
   pID = $('.container').find('.' + playerName).parent().attr('class').split(' ')[1]
 }
