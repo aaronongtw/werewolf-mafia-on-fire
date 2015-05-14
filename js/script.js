@@ -91,7 +91,7 @@ var werewolfGame = {
     },
     dayPhase: function() {
       debugger;
-      $(".tictac").hide();
+      $(".tictac").remove();
       event = "discussion time";
       console.log(event)
       dayPhase.allVote();
