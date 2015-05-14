@@ -121,7 +121,7 @@ var werewolfGame = {
       });
       $('.body').addClass(' day');
       $('#phase').html("Phase: Day");
-      $('#supplemental').html("Everyone, please talk amongst yourselves, and then vote on whom to kill!")
+      $('#supplemental').html("Everyone, please talk amongst yourselves, and then vote on whom to kill! Drink a shot by the time round is over. Add a drink to king cup")
       werewolfGame.winCondition();
       $(".tictac").html("")
       // var event = "discussion time";
@@ -129,12 +129,12 @@ var werewolfGame = {
       dayPhase.allVote();
     },
     mafiaWin: function() {
-      alert("MAFIA WINS")
+      alert("MAFIA WINS, Villagers drinks")
       removeData()
       location.reload()
     },
     villagerWin: function() {
-      alert("VILLAGERS WIN")
+      alert("VILLAGERS WIN, Mafia drinks")
       removeData();
       location.reload()
     },
@@ -181,6 +181,13 @@ var werewolfGame = {
       roleCountCap[roleArray.indexOf(pRole[cID].role)] -= 1;
       villageDataArray.$set(cID, pRole[cID])
 
+    },
+    suicide: function() {
+      pRole = list;
+      pRole[pID].status = "dead";
+      roleCountCap[roleArray.indexOf(pRole[pID].role)] -= 1;
+      villageDataArray.$set(pID, pRole[pID])
+      alert("How the fuck did you lose that? Drink the king cup!")
     }
   }
   // update : function() {
@@ -199,15 +206,11 @@ var nightPhase = {
 
   },
   bubblePop: function() {
-    var winloss = true;
     phase = "night";
     tictac();
-    if (winloss === true) {
-      countdown(10, werewolfGame.checkDeath);
-    } else {
-      werewolfGame.dead();
-      countdown(10, werewolfGame.checkDeath);
-    }
+    countdown(10, werewolfGame.checkDeath);
+    if (winloss === false) {werewolfGame.suicide();
+    } 
   }
 };
 var dayPhase = {
