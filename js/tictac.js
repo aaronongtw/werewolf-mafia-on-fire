@@ -1,4 +1,4 @@
-var run tictac = function () {
+var tictac = function () {
 
   $('.tictac').show();
 
@@ -35,7 +35,7 @@ var run tictac = function () {
       //console.log(fullclass);
       inputMat[parseInt(fullclass[4])] = 1;
       //console.log(fullclass[4]);
-      if checkWin(1) {
+      if (checkWin(1)) {
         console.log('user wins')
       } else {
         computerSelect();
@@ -69,7 +69,7 @@ var run tictac = function () {
       var boxString = '.' + rand;
       $('.tictac').find(boxString).html('O');
       inputMat[rand] = -1;
-      if checkWin(-1) {
+      if (checkWin(-1)) {
         console.log('computer wins');
       }
     } 

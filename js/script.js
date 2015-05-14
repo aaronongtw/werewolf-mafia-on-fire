@@ -19,105 +19,115 @@ var dice = function(min, max) {
 
 var werewolfGame = {
 
-  appendPlayer: function() {
-    var assignedRole;
-    pRole = list
-    if (pRole.length < 4) {
-      roleRandom = dice(0, 1)
-      if (roleCountCap[0] === 1) {
-        roleRandom = 1;
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
-      } else if (roleCountCap[1] === 2) {
-        roleRandom = 0;
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
-      } else {
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
+    appendPlayer: function() {
+      var assignedRole;
+      pRole = list
+      if (pRole.length < 4) {
+        roleRandom = dice(0, 1)
+        if (roleCountCap[0] === 1) {
+          roleRandom = 1;
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        } else if (roleCountCap[1] === 2) {
+          roleRandom = 0;
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        } else {
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        }
+
+      } else if (pRole.length < 6) {
+        roleRandom = dice(0, 1)
+        if (roleCountCap[0] === 2) {
+          roleRandom = 1;
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        } else if (roleCountCap[1] === 3) {
+          roleRandom = 0;
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        } else {
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        }
+      } else if (pRole.length < 11) {
+        roleRandom = dice(0, 2)
+        if (roleCountCap[0] === 3) {
+          roleRandom = 1;
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        } else if (roleCountCap[1] === 6) {
+          roleRandom = 0;
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        } else if (roleCount[2] === 1) {
+          roleRandom = 1;
+          assignedRole = roleArray[roleRandom]
+          roleCountCap[roleRandom] += 1;
+
+        } else {
+          assignedRole = roleArray[roleRandom];
+          roleCountCap[roleRandom] += 1;
+        }
+      }
+      villageDataArray.$set(pRole.length, {
+        id: pRole.length,
+        name: playerName,
+        color: colorArray[pRole.length],
+        role: assignedRole,
+        status: "alive",
+        voteCount: 0
+      });
+    },
+    nightPhase: function() {
+      pRole = list
+      if (pRole[pID].role === "mafia") {
+        nightPhase.mafiaVote();
+      }
+      if (pRole[pID].role === "villager") {
+        nightPhase.bubblePop();
+      }
+    },
+    dayPhase: function() {
+      event = "discussion time"
+      console.log(event)
+      $('.tictac').hide();
+      dayPhase.allVote();
+    },
+    winCondition: function() {
+      if (roleCountCap[0] === roleCountCap[1]) {
+        werewolfGame.mafiaWin();
+      } else if (roleCountCap[0] === 0) {
+        werewolfGame.villagerWin();
       }
 
-    } else if (pRole.length < 6) {
-      roleRandom = dice(0, 1)
-      if (roleCountCap[0] === 2) {
-        roleRandom = 1;
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
-      } else if (roleCountCap[1] === 3) {
-        roleRandom = 0;
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
-      } else {
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
+    },
+    checkDeath: function() {
+      var voteCheck = function() {
+        if (pRole[cID].voteCount === roleCountCap[0] && phase === "night") {
+          werewolfGame.dead();
+          werewolfGame.dayPhase();
+        } else if (phase === "night") {
+          werewolfGame.dayPhase();
+        }
+        if (pRole[cID].voteCount === Math.ceil(pRole.length / 2) && phase === "day") {
+          werewolfGame.dead();
+          werewolfGame.nightPhase();
+        } else if (phase === "day") {
+          werewolfGame.nightPhase();
+        }
       }
-    } else if (pRole.length < 11) {
-      roleRandom = dice(0, 2)
-      if (roleCountCap[0] === 3) {
-        roleRandom = 1;
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
-      } else if (roleCountCap[1] === 6) {
-        roleRandom = 0;
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
-      } else if (roleCount[2] === 1) {
-        roleRandom = 1;
-        assignedRole = roleArray[roleRandom]
-        roleCountCap[roleRandom] += 1;
-
-      } else {
-        assignedRole = roleArray[roleRandom];
-        roleCountCap[roleRandom] += 1;
+      if (cID === undefined) {
+        cID = dice(0, list.length)
+        voteCheck();
       }
-    }
-    villageDataArray.$set(pRole.length, {
-      id: pRole.length,
-      name: playerName,
-      color: colorArray[pRole.length],
-      role: assignedRole,
-      status: "alive",
-      voteCount: 0
-    });
-  },
-  nightPhase: function() {
-    pRole = list
-    if (pRole[pID].role === "mafia") {
-      nightPhase.mafiaVote();
-    }
-    if (pRole[pID].role === "villager") {
-      nightPhase.bubblePop();
-    }
-  },
-  dayPhase: function() {
-    event = "discussion time"
-    console.log(event)
-    dayPhase.allVote();
-  },
-  winCondition: function() {
-    if (roleCountCap[0] === roleCountCap[1]) {
-      werewolfGame.mafiaWin();
-    } else if (roleCountCap[0] === 0) {
-      werewolfGame.villagerWin();
-    }
-
-  },
-  checkDeath: function() {
-    if (cID === undefined) {cID = dice(0,list.length)}
-    if (pRole[cID].voteCount === roleCountCap[0] && phase==="night") {
-        werewolfGame.dead();
-        werewolfGame.dayPhase();
-    } else if (phase === "night") {
-        werewolfGame.dayPhase();
-    }
-    if (pRole[cID].voteCount === Math.ceil(pRole.length / 2) && phase==="day") {
-        werewolfGame.dead();  
-        werewolfGame.nightPhase();
-    } else if (phase === "day") {
-        werewolfGame.nightPhase();
-    }
-  },
-  dead: function() {
+      else {
+        voteCheck();
+      }
+      
+    },
+    dead: function() {
       pRole = list;
       pRole[cID].status = "dead";
       roleCountCap[roleArray.indexOf(pRole[cID].role)] -= 1;
@@ -125,10 +135,10 @@ var werewolfGame = {
       villageDataArray.$set(cID, pRole[cID])
 
     }
-}
-    // update : function() {
+  }
+  // update : function() {
 
-  // }
+// }
 
 nightPhase = {
 
@@ -148,7 +158,7 @@ nightPhase = {
   }
 }
 dayPhase = {
-    
+
   allVote: function() {
     phase = "day"
     resetVotes();
@@ -195,7 +205,7 @@ var popHMain = function() {
 
 
 var reflowHMain = function(objec) {
-  objec.forEach(function (element, index) {
+  objec.forEach(function(element, index) {
     if (element.status === 'dead') {
       $('.' + element.id).addClass('eliminated');
     }
@@ -237,11 +247,11 @@ var countdown = function(seconds, funct) {
 
 
 var updateList = function() {
-roleCountCap = [0,0,0,0]
+  roleCountCap = [0, 0, 0, 0]
   list = getSynchronizedArray(villageData);
   reflowHMain(list);
-  for (var i = 0; i<list.length;i+=1){
-    roleCountCap[roleArray.indexOf(list[i].role)] +=1
+  for (var i = 0; i < list.length; i += 1) {
+    roleCountCap[roleArray.indexOf(list[i].role)] += 1
   }
 }
 
