@@ -45,7 +45,7 @@ var tictac = function () {
     var fullclass = $(this).attr('class');
 
     //if the clicked square already contains an x or an o, then it doesn't allow the user to click the square
-    if (inputMat[parseInt(fullclass[4])] === 1 || -1) {
+    if (Math.abs(inputMat[parseInt(fullclass[4])]) === 1) {
       console.log("you can't click there")
     } else {
       $(this).html('X');
@@ -53,7 +53,7 @@ var tictac = function () {
       inputMat[parseInt(fullclass[4])] = 1;
       //console.log(fullclass[4]);
       if (checkWin(1)) {
-        console.log('user wins')
+        winScreen(1);
       } else {
         computerSelect();
       }
@@ -87,7 +87,7 @@ var tictac = function () {
       $('.tictac').find(boxString).html('O');
       inputMat[rand] = -1;
       if (checkWin(-1)) {
-        console.log('computer wins');
+        winScreen(-1);
       }
     } 
   }
