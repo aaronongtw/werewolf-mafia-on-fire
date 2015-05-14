@@ -81,6 +81,7 @@ var werewolfGame = {
       });
     },
     nightPhase: function() {
+      werewolfGame.winCondition();
       pRole = list
       if (pRole[pID].role === "mafia") {
         nightPhase.mafiaVote();
@@ -90,6 +91,7 @@ var werewolfGame = {
       }
     },
     dayPhase: function() {
+      werewolfGame.winCondition();
       $(".tictac").html("")
       event = "discussion time";
       console.log(event)
@@ -97,8 +99,8 @@ var werewolfGame = {
     },
     mafiaWin: function() {
       alert("MAFIA WINS")
-      removeData()
-      location.reload()
+      setTimeout(removeData,5000)
+      setTimeout(location.reload,5000)
     },
     villagerWin: function() {
       alert("VILLAGER WINS")
@@ -106,6 +108,7 @@ var werewolfGame = {
       location.reload()
     },
     winCondition: function() {
+      updateList();
       if (roleCountCap[0] === roleCountCap[1]) {
         werewolfGame.mafiaWin();
       } else if (roleCountCap[0] === 0) {
@@ -145,7 +148,6 @@ var werewolfGame = {
       pRole = list;
       pRole[cID].status = "dead";
       roleCountCap[roleArray.indexOf(pRole[cID].role)] -= 1;
-      werewolfGame.winCondition();
       villageDataArray.$set(cID, pRole[cID])
 
     }
