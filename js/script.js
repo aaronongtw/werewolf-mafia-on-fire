@@ -99,8 +99,8 @@ var werewolfGame = {
     },
     mafiaWin: function() {
       alert("MAFIA WINS")
-      setTimeout(removeData,5000)
-      setTimeout(location.reload,5000)
+      setTimeout(removeData(),5000)
+      setTimeout(location.reload(),5000)
     },
     villagerWin: function() {
       alert("VILLAGER WINS")
@@ -270,6 +270,7 @@ var updateList = function() {
   list = getSynchronizedArray(villageData);
   reflowHMain(list);
   for (var i = 0; i < list.length; i += 1) {
+    if (list[i]).status === "alive")
     roleCountCap[roleArray.indexOf(list[i].role)] += 1
   }
 }
