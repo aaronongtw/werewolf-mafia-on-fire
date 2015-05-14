@@ -97,9 +97,13 @@ var werewolfGame = {
     },
     mafiaWin: function() {
       alert("MAFIA WINS")
+      removeData()
+      location.reload()
     },
     villagerWin: function() {
       alert("VILLAGER WINS")
+      removeData();
+      location.reload()
     },
     winCondition: function() {
       if (roleCountCap[0] === roleCountCap[1]) {
@@ -129,7 +133,7 @@ var werewolfGame = {
     },
     checkDeath: function() {
       if (cID === undefined) {
-        cID = dice(0, list.length)
+        cID = dice(0, list.length-1)
         werewolfGame.voteCheck();
       } else {
         werewolfGame.voteCheck();

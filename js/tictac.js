@@ -90,13 +90,14 @@ var tictac = function () {
 
   var winScreen = function(xx) {
     var $overlay = $('<div class="overlay"></div>');
-    $box.css({width: '100%',
+    $overlay.css({width: '100%',
       height: '100%',
       'background-color': 'rgba(0,0,0,.4)',
       position: 'absolute',
       'z-index': 6,
       textAlign: 'center'
     });
+    $('.tictac').append($overlay)
 
     if (xx === 1) {
       $('.overlay').html("You Win (or, more likely, barely avoided losing)! You get to live")
