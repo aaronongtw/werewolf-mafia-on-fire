@@ -270,6 +270,7 @@ var updateList = function() {
   list = getSynchronizedArray(villageData);
   reflowHMain(list);
   for (var i = 0; i < list.length; i += 1) {
+    if (list[i]).status === "alive")
     roleCountCap[roleArray.indexOf(list[i].role)] += 1
   }
 }
