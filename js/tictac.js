@@ -1,6 +1,6 @@
 var tictac = function () {
-
-  $('.tictac').show();
+  // debugger;
+  // $('.tictac' ).show();
 
   var inputMat = [0,0,0,0,0,0,0,0,0];
   var $box = $('<div class="box"></div>');
