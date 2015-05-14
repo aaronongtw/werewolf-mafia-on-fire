@@ -99,8 +99,8 @@ var werewolfGame = {
     },
     mafiaWin: function() {
       alert("MAFIA WINS")
-      setTimeout(removeData,5000)
-      setTimeout(location.reload,5000)
+      setTimeout(removeData(),5000)
+      setTimeout(location.reload(),5000)
     },
     villagerWin: function() {
       alert("VILLAGER WINS")
