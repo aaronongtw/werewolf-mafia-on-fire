@@ -409,7 +409,6 @@ var upVoteCount = function() {
     pRole[parseInt($(this).attr('class').split(' ')[1])].voteCount += 1;
     playerVote += 1;
     villageDataArray.$set(parseInt($(this).attr('class').split(' ')[1]), pRole[parseInt($(this).attr('class').split(' ')[1])]);
-    werewolfGame.checkDeath()
   }
 
 }
@@ -446,7 +445,7 @@ var newPlayer = function() {
     $(".timer").html("<p>" + sec + " seconds remaining</p>")
       if(newP.length !== list.length) {
         sec = 20
-        console.log("YOU HAVE A NEW ChALLENGER")
+        console.log("YOU HAVE A NEW CHALLENGER")
         newP.push(list[list.length-1])
       }
       if (sec === 0) {
