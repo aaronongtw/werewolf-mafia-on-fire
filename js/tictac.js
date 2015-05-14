@@ -97,7 +97,9 @@ var tictac = function () {
       'z-index': 6,
       textAlign: 'center'
     });
+
     $('.tictac').append($overlay);
+
     if (xx === 1) {
       $('.overlay').html("You Win (or, more likely, barely avoided losing)! You get to live")
       return true;

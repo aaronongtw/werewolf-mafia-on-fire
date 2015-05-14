@@ -83,6 +83,7 @@ var werewolfGame = {
       });
     },
     nightPhase: function() {
+
       pRole = list;
       $('.body').addClass(' night');
       $('#phase').html("Phase: Night");
@@ -99,6 +100,7 @@ var werewolfGame = {
         $('.body').addClass(' day');
         $('#phase').html("Phase: Day");
         $('#supplemental').html("Everyone, please talk amongst yourselves, and then vote on whom to kill!")
+      werewolfGame.winCondition();
       $(".tictac").html("")
       // var event = "discussion time";
       // console.log(event)
@@ -106,11 +108,16 @@ var werewolfGame = {
     },
     mafiaWin: function() {
       alert("MAFIA WINS")
+      setTimeout(removeData(),5000)
+      setTimeout(location.reload(),5000)
     },
     villagerWin: function() {
       alert("VILLAGERS WIN")
+      removeData();
+      location.reload()
     },
     winCondition: function() {
+      updateList();
       if (roleCountCap[0] === roleCountCap[1]) {
         werewolfGame.mafiaWin();
       } else if (roleCountCap[0] === 0) {
@@ -150,7 +157,6 @@ var werewolfGame = {
       pRole = list;
       pRole[cID].status = "dead";
       roleCountCap[roleArray.indexOf(pRole[cID].role)] -= 1;
-      werewolfGame.winCondition();
       villageDataArray.$set(cID, pRole[cID])
 
     }
@@ -273,7 +279,9 @@ var updateList = function() {
   list = getSynchronizedArray(villageData);
   reflowHMain(list);
   for (var i = 0; i < list.length; i += 1) {
+    if (list[i].status === "alive"){
     roleCountCap[roleArray.indexOf(list[i].role)] += 1
+  }
   }
 }
 
