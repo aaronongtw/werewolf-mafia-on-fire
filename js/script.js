@@ -95,6 +95,12 @@ var werewolfGame = {
       console.log(event)
       dayPhase.allVote();
     },
+    mafiaWin: function() {
+      alert("MAFIA WINS")
+    },
+    villagerWin: function() {
+      alert("VILLAGER WINS")
+    },
     winCondition: function() {
       if (roleCountCap[0] === roleCountCap[1]) {
         werewolfGame.mafiaWin();
@@ -262,6 +268,8 @@ var updateList = function() {
   }
 }
 
+
+
 function getSynchronizedArray(villageData) {
   var list = [];
   syncChanges(list, villageData);
@@ -382,6 +390,27 @@ $('.player-tile').on("click", upVoteCount)
   //     })
   // }
   // 
+  // 
+var newP = [];
 
-countdown(15, popHMain);
-countdown(20, startGame);
+var newPlayer = function() {
+  var sec = 20
+  $(".timer").html("<p>" + sec + " seconds remaining</p>")
+  var minusOne = setInterval(function() {
+    sec -= 1
+    $(".timer").html("<p>" + sec + " seconds remaining</p>")
+      if(newP.length !== list.length) {
+        sec = 20
+        console.log("YOU HAVE A NEW ChALLENGER")
+        newP.push(list[list.length-1])
+      }
+      if (sec === 0) {
+      clearInterval(minusOne);
+      popHMain();
+      startGame();
+    }
+  }, 1000)
+}
+
+
+setTimeout(newPlayer,1000);
