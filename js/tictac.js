@@ -1,7 +1,8 @@
+var winloss = true;
 var tictac = function () {
   // debugger;
   // $('.tictac' ).show();
-  var winloss = true;
+  
   var inputMat = [0,0,0,0,0,0,0,0,0];
   var $box = $('<div class="box"></div>');
   $box.css({width: '196px',
