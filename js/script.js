@@ -83,7 +83,7 @@ var werewolfGame = {
       });
     },
     nightPhase: function() {
-
+        werewolfGame.winCondition();
       pRole = list;
       $('.body').addClass(' night');
       $('#phase').html("Phase: Night");
