@@ -1,4 +1,4 @@
-var run tictac = function () {
+var tictac = function () {
 
   $('.tictac').show();
 
@@ -15,6 +15,23 @@ var run tictac = function () {
     'z-index': 5
   });
 
+  var winScreen = function(xx) {
+    var $overlay = $('<div class="overlay"></div>');
+    $box.css({width: '100%',
+      height: '100%',
+      'background-color': 'rgba(0,0,0,.4)',
+      position: 'absolute',
+      'z-index': 6,
+      textAlign: 'center'
+    });
+
+    if (xx === 1) {
+      $('.overlay').html("You Win (or, more likely, avoided losing)! You get to live")
+    } else {
+      $('.overlay').html("You lost to a random computer, you die... And are dumb.")
+    }
+  }
+
   var setupBoard = function () {
     for (var i = 0 ; i < inputMat.length ; i++ ) {
       $('.tictac').append($box.clone());
@@ -28,14 +45,14 @@ var run tictac = function () {
     var fullclass = $(this).attr('class');
 
     //if the clicked square already contains an x or an o, then it doesn't allow the user to click the square
-    if (inputMat[parseInt(fullclass[4])] === 1) {
+    if (inputMat[parseInt(fullclass[4])] === 1 || -1) {
       console.log("you can't click there")
     } else {
       $(this).html('X');
       //console.log(fullclass);
       inputMat[parseInt(fullclass[4])] = 1;
       //console.log(fullclass[4]);
-      if checkWin(1) {
+      if (checkWin(1)) {
         console.log('user wins')
       } else {
         computerSelect();
@@ -69,7 +86,7 @@ var run tictac = function () {
       var boxString = '.' + rand;
       $('.tictac').find(boxString).html('O');
       inputMat[rand] = -1;
-      if checkWin(-1) {
+      if (checkWin(-1)) {
         console.log('computer wins');
       }
     } 
@@ -79,6 +96,8 @@ var run tictac = function () {
   var checkWin = function (x) {
     if ( (inputMat[0] === inputMat[1] && inputMat[2] && x) || (inputMat[3] === inputMat[4] && inputMat[5] && x) || (inputMat[6] === inputMat[7] && inputMat[8] && x) || (inputMat[0] === inputMat[3] && inputMat[6] && x) || (inputMat[1] === inputMat[4] && inputMat[7] && x) || (inputMat[2] === inputMat[5] && inputMat[8] && x) || (inputMat[0] === inputMat[4] && inputMat[8] && x) || (inputMat[2] === inputMat[4] && inputMat[6] && x) ) {
       return true;
+    } else {
+      return false;
     }
   }
 
