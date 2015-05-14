@@ -90,8 +90,7 @@ var werewolfGame = {
       }
     },
     dayPhase: function() {
-      debugger;
-      $(".tictac").hide();
+      $(".tictac").html("")
       event = "discussion time";
       console.log(event)
       dayPhase.allVote();
@@ -104,30 +103,34 @@ var werewolfGame = {
       }
 
     },
-    checkDeath: function() {
-      var voteCheck = function() {
-        if (pRole[cID].voteCount === roleCountCap[0] && phase === "night") {
-          werewolfGame.dead();
-          werewolfGame.dayPhase();
-        } else if (phase === "night") {
-          werewolfGame.dayPhase();
-        }
-        if (pRole[cID].voteCount === Math.ceil(pRole.length / 2) && phase === "day") {
-          werewolfGame.dead();
-          werewolfGame.nightPhase();
-        } else if (phase === "day") {
-          werewolfGame.nightPhase();
-        }
+    voteCheck: function() {
+      if (pRole[cID].voteCount === roleCountCap[0] && phase === "night") {
+        console.log("day phase someone died")
+        werewolfGame.dead();
+        werewolfGame.dayPhase();
+      } else if (phase === "night") {
+        werewolfGame.dayPhase();
+        console.log("day phase")
       }
+      else if (pRole[cID].voteCount === Math.ceil(pRole.length / 2) && phase === "day") {
+        werewolfGame.dead();
+        werewolfGame.nightPhase();
+        console.log("night phase someone died")
+      } else if (phase === "day") {
+        werewolfGame.nightPhase();
+        console.log("night phase")
+      }
+    },
+    checkDeath: function() {
       if (cID === undefined) {
         cID = dice(0, list.length)
-        voteCheck();
+        werewolfGame.voteCheck();
+      } else {
+        werewolfGame.voteCheck();
       }
-      else {
-        voteCheck();
-      }
-      
+
     },
+
     dead: function() {
       pRole = list;
       pRole[cID].status = "dead";
@@ -141,7 +144,7 @@ var werewolfGame = {
 
 // }
 
-nightPhase = {
+var nightPhase = {
 
   mafiaVote: function() {
     phase = "night"
@@ -153,22 +156,22 @@ nightPhase = {
 
   },
   bubblePop: function() {
-    phase = "night"
-    $(".tictac").show()
+    phase = "night";
+    $(".tictac").show();
     tictac();
-    countdown(10, werewolfGame.checkDeath)
+    countdown(10, werewolfGame.checkDeath);
   }
-}
-dayPhase = {
+};
+var dayPhase = {
 
   allVote: function() {
     phase = "day"
     resetVotes();
     playerVote = -1;
-    pRole = list
-    countdown(12, werewolfGame.checkDeath)
+    pRole = list;
+    countdown(12, werewolfGame.checkDeath);
   }
-}
+};
 
 /*
      __________                              
@@ -230,7 +233,9 @@ var reflowHMain = function(objec) {
 //       computerSelect();
 //     }
 // }
-
+var logging = function() {
+  console.log("logging")
+}
 
 var countdown = function(seconds, funct) {
   var sec = seconds
