@@ -1,7 +1,7 @@
 var tictac = function () {
   // debugger;
   // $('.tictac' ).show();
-  
+
   var inputMat = [0,0,0,0,0,0,0,0,0];
   var $box = $('<div class="box"></div>');
   $box.css({width: '196px',
@@ -97,14 +97,15 @@ var tictac = function () {
       'z-index': 6,
       textAlign: 'center'
     });
-    $('.tictac').append($overlay)
+
+    $('.tictac').append($overlay);
 
     if (xx === 1) {
       $('.overlay').html("You Win (or, more likely, barely avoided losing)! You get to live")
-    } else if (xx === -1) {
-      $('.overlay').html("You lost to a random computer, you die... And are dumb.")
+      return true;
     } else {
-      $('.overlay').html("You tied! Woo!.")
+      $('.overlay').html("You lost to a random computer, you die... And are dumb.")
+      return false;
     }
   }
 
@@ -112,5 +113,7 @@ var tictac = function () {
   setupBoard();
 
   $('.tictac').on('click', '.box', userSelect);
+
+
 
 }

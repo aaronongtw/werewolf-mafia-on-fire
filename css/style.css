@@ -28,7 +28,7 @@ body{
 	padding:5px;
 	text-align:center;
 }
-.phase-instruction{
+.supplemental{
 	text-align:center;
 }
 .player-tile{
@@ -38,14 +38,10 @@ body{
 	display:table;
 	position:relative;
 }
-.eliminated:after{
+.eliminated{
 	content:"";
 	display:block;
-	position: absolute;
-	left:0;
-	right:0;
-	top:0;
-	bottom:0;
+	position: relative;
 	background: rgba(120,25,25,0.8);
 }
 
@@ -89,7 +85,11 @@ body{
 	background-color: rgba(255,255,255,1);
 	margin: 0 auto;
 	z-index: 4;
-	position: absolute;
-	left: 0px;
-	top: 200px;
+	position: relative;
+	top: 0px;
+}
+#test{
+	width:200px;
+	height:100px;
+	margin:auto;
 }
