@@ -99,8 +99,8 @@ var werewolfGame = {
     },
     mafiaWin: function() {
       alert("MAFIA WINS")
-      removeData()
-      location.reload()
+      setTimeout(removeData,5000)
+      setTimeout(location.reload,5000)
     },
     villagerWin: function() {
       alert("VILLAGER WINS")
@@ -108,6 +108,7 @@ var werewolfGame = {
       location.reload()
     },
     winCondition: function() {
+      updateList();
       if (roleCountCap[0] === roleCountCap[1]) {
         werewolfGame.mafiaWin();
       } else if (roleCountCap[0] === 0) {
