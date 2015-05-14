@@ -39,9 +39,6 @@ body{
 	position:relative;
 }
 .eliminated{
-	content:"";
-	display:block;
-	position: relative;
 	background: rgba(120,25,25,0.8);
 }
 
@@ -83,7 +80,8 @@ body{
 	top: 0px;
 }
 #test{
-	width:200px;
+	width: 100%;
 	height:100px;
-	margin:auto;
+	position: relative;
+	margin: 0 auto;
 }
