@@ -166,6 +166,8 @@ var werewolfGame = {
       }
     },
     checkDeath: function() {
+      if (winloss === false) {werewolfGame.suicide();
+    } 
       if (cID === undefined) {
         cID = dice(0, list.length - 1);
         werewolfGame.voteCheck();
@@ -188,6 +190,7 @@ var werewolfGame = {
       roleCountCap[roleArray.indexOf(pRole[pID].role)] -= 1;
       villageDataArray.$set(pID, pRole[pID])
       alert("How the fuck did you lose that? Drink the king cup!")
+      winloss = true;
     }
   }
   // update : function() {
@@ -201,16 +204,15 @@ var nightPhase = {
     resetVotes();
     playerVote = -1
     pRole = list
-    countdown(10, werewolfGame.checkDeath)
+    countdown(30, werewolfGame.checkDeath)
     //console.log("you are mafia")
 
   },
   bubblePop: function() {
     phase = "night";
     tictac();
-    countdown(10, werewolfGame.checkDeath);
-    if (winloss === false) {werewolfGame.suicide();
-    } 
+    countdown(30, werewolfGame.checkDeath);
+    
   }
 };
 var dayPhase = {
@@ -220,7 +222,7 @@ var dayPhase = {
     resetVotes();
     playerVote = -1;
     pRole = list;
-    countdown(12, werewolfGame.checkDeath);
+    countdown(150, werewolfGame.checkDeath);
   }
 };
 
