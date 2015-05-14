@@ -90,9 +90,10 @@ var werewolfGame = {
       }
     },
     dayPhase: function() {
-      event = "discussion time"
+      debugger;
+      $(".tictac").hide();
+      event = "discussion time";
       console.log(event)
-      $('.tictac').hide();
       dayPhase.allVote();
     },
     winCondition: function() {
@@ -147,14 +148,15 @@ nightPhase = {
     resetVotes();
     playerVote = -1
     pRole = list
-    countdown(60, werewolfGame.checkDeath)
+    countdown(10, werewolfGame.checkDeath)
     console.log("you are mafia")
 
   },
   bubblePop: function() {
     phase = "night"
+    $(".tictac").show()
     tictac();
-    countdown(60, werewolfGame.checkDeath)
+    countdown(10, werewolfGame.checkDeath)
   }
 }
 dayPhase = {
@@ -164,7 +166,7 @@ dayPhase = {
     resetVotes();
     playerVote = -1;
     pRole = list
-    countdown(120, werewolfGame.checkDeath)
+    countdown(12, werewolfGame.checkDeath)
   }
 }
 
