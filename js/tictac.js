@@ -15,23 +15,6 @@ var tictac = function () {
     'z-index': 5
   });
 
-  var winScreen = function(xx) {
-    var $overlay = $('<div class="overlay"></div>');
-    $box.css({width: '100%',
-      height: '100%',
-      'background-color': 'rgba(0,0,0,.4)',
-      position: 'absolute',
-      'z-index': 6,
-      textAlign: 'center'
-    });
-
-    if (xx === 1) {
-      $('.overlay').html("You Win (or, more likely, avoided losing)! You get to live")
-    } else {
-      $('.overlay').html("You lost to a random computer, you die... And are dumb.")
-    }
-  }
-
   var setupBoard = function () {
     for (var i = 0 ; i < inputMat.length ; i++ ) {
       $('.tictac').append($box.clone());
@@ -54,6 +37,8 @@ var tictac = function () {
       //console.log(fullclass[4]);
       if (checkWin(1)) {
         winScreen(1);
+      } else if (summa === 9) {
+        winScreen(0);
       } else {
         computerSelect();
       }
@@ -88,6 +73,8 @@ var tictac = function () {
       inputMat[rand] = -1;
       if (checkWin(-1)) {
         winScreen(-1);
+      } else if (summa === 9) {
+        winScreen(0);
       }
     } 
   }
@@ -101,6 +88,24 @@ var tictac = function () {
     }
   }
 
+  var winScreen = function(xx) {
+    var $overlay = $('<div class="overlay"></div>');
+    $box.css({width: '100%',
+      height: '100%',
+      'background-color': 'rgba(0,0,0,.4)',
+      position: 'absolute',
+      'z-index': 6,
+      textAlign: 'center'
+    });
+
+    if (xx === 1) {
+      $('.overlay').html("You Win (or, more likely, barely avoided losing)! You get to live")
+    } else if (xx === -1) {
+      $('.overlay').html("You lost to a random computer, you die... And are dumb.")
+    } else {
+      $('.overlay').html("You tied! Woo!.")
+    }
+  }
 
 
   setupBoard();
