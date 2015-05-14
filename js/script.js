@@ -3,15 +3,16 @@ var playerName;
 var playerRole;
 var pRole = [];
 var playerVote = -1;
-var colorArray = ['red', 'blue', 'green', 'pink', 'brown', 'black', 'yellow', 'orange', 'purple', 'grey']
-var roleArray = ['mafia', 'villager', 'doctor', 'inspector']
-var roleCountCap = [0, 0, 0, 0]
+var colorArray = ['red', 'blue', 'green', 'pink', 'brown', 'black', 'yellow', 'orange', 'purple', 'grey'];
+var roleArray = ['mafia', 'villager', 'doctor', 'inspector'];
+var roleCountCap = [0, 0, 0, 0];
 var extraRole = ['Vigilante', 'Barman']
 var villageData = new Firebase("https://glowing-heat-4029.firebaseio.com");
 var villageDataArray = getSynchronizedArray(villageData);
 var pID;
 var cID;
 var phase;
+
 
 var dice = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -20,6 +21,7 @@ var dice = function(min, max) {
 var werewolfGame = {
 
     appendPlayer: function() {
+        $('#test').remove()
       var assignedRole;
       pRole = list
       if (pRole.length < 4) {
@@ -81,25 +83,32 @@ var werewolfGame = {
       });
     },
     nightPhase: function() {
-      pRole = list
+      pRole = list;
+      $('.body').addClass(' night');
+      $('#phase').html("Phase: Night");
       if (pRole[pID].role === "mafia") {
+        $('#supplemental').html("You're the mafia, vote on a player to kill!")
         nightPhase.mafiaVote();
       }
       if (pRole[pID].role === "villager") {
+        $('#supplemental').html("You're a villager, beat or tie the computer to stay alive!");
         nightPhase.bubblePop();
       }
     },
     dayPhase: function() {
+        $('.body').addClass(' day');
+        $('#phase').html("Phase: Day");
+        $('#supplemental').html("Everyone, please talk amongst yourselves, and then vote on whom to kill!")
       $(".tictac").html("")
-      event = "discussion time";
-      console.log(event)
+      // var event = "discussion time";
+      // console.log(event)
       dayPhase.allVote();
     },
     mafiaWin: function() {
       alert("MAFIA WINS")
     },
     villagerWin: function() {
-      alert("VILLAGER WINS")
+      alert("VILLAGERS WIN")
     },
     winCondition: function() {
       if (roleCountCap[0] === roleCountCap[1]) {
@@ -111,25 +120,25 @@ var werewolfGame = {
     },
     voteCheck: function() {
       if (pRole[cID].voteCount === roleCountCap[0] && phase === "night") {
-        console.log("day phase someone died")
+        //console.log("day phase someone died")
         werewolfGame.dead();
         werewolfGame.dayPhase();
       } else if (phase === "night") {
         werewolfGame.dayPhase();
-        console.log("day phase")
+        //console.log("day phase")
       }
       else if (pRole[cID].voteCount === Math.ceil(pRole.length / 2) && phase === "day") {
         werewolfGame.dead();
         werewolfGame.nightPhase();
-        console.log("night phase someone died")
+        //console.log("night phase someone died")
       } else if (phase === "day") {
         werewolfGame.nightPhase();
-        console.log("night phase")
+        //console.log("night phase")
       }
     },
     checkDeath: function() {
       if (cID === undefined) {
-        cID = dice(0, list.length)
+        cID = dice(0, list.length - 1);
         werewolfGame.voteCheck();
       } else {
         werewolfGame.voteCheck();
@@ -382,8 +391,8 @@ setInterval(updateList, 500)
 playerName = prompt("What is your name?")
 $('.container').on('click', '.player-tile', upVoteCount);
 
-$('#test').on("click", werewolfGame.appendPlayer)
-$('.player-tile').on("click", upVoteCount)
+$('#test').on("click", werewolfGame.appendPlayer);
+$('.player-tile').on("click", upVoteCount);
   // var updHMain = function (objec) {
   //     objec.forEach( function () {
   //         if 
