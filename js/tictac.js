@@ -1,7 +1,7 @@
 var tictac = function () {
   // debugger;
   // $('.tictac' ).show();
-
+  var winloss = true;
   var inputMat = [0,0,0,0,0,0,0,0,0];
   var $box = $('<div class="box"></div>');
   $box.css({width: '196px',
@@ -95,17 +95,19 @@ var tictac = function () {
       'background-color': 'rgba(0,0,0,.4)',
       position: 'absolute',
       'z-index': 6,
-      textAlign: 'center'
+      textAlign: 'center',
+      color: 'white',
+      fontSize: '14px'
     });
 
     $('.tictac').append($overlay);
 
     if (xx === 1) {
       $('.overlay').html("You Win (or, more likely, barely avoided losing)! You get to live")
-      return true;
+      winloss = true;
     } else {
       $('.overlay').html("You lost to a random computer, you die... And are dumb.")
-      return false;
+      winloss = false;
     }
   }
 

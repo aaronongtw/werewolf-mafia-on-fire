@@ -21,7 +21,8 @@ var dice = function(min, max) {
 var werewolfGame = {
 
     appendPlayer: function() {
-        $('#test').remove()
+      $('#test').remove()
+      $('#supplemental').html("You're in the game, waiting for everyone else!")
       var assignedRole;
       pRole = list
       if (pRole.length < 4) {
@@ -85,10 +86,24 @@ var werewolfGame = {
     nightPhase: function() {
       werewolfGame.winCondition();
       pRole = list;
+
+      list.forEach(function(element, index) {
+        if (element.role === 'mafia') {
+          $('.' + element.id).children('.role-badge').css({'background-color': '#af111c'}); 
+        } else {
+          $('.' + element.id).children('.role-badge').css({'background-color': 'grey'}); 
+        }
+      });
+      if (list[pID].status === 'dead') {
+        $('.container').html("You're Dead")
+        $('.container').css({'background-color': 'red'})
+      }
+
+
       $('.body').addClass(' night');
       $('#phase').html("Phase: Night");
       if (pRole[pID].role === "mafia") {
-        $('#supplemental').html("You're the mafia, vote on a player to kill!")
+        $('#supplemental').html("You're one of the mafia, vote on a player to kill!")
         nightPhase.mafiaVote();
       }
       if (pRole[pID].role === "villager") {
@@ -97,9 +112,16 @@ var werewolfGame = {
       }
     },
     dayPhase: function() {
-        $('.body').addClass(' day');
-        $('#phase').html("Phase: Day");
-        $('#supplemental').html("Everyone, please talk amongst yourselves, and then vote on whom to kill!")
+      if (list[pID].status === 'dead') {
+        $('.container').html("You're Dead")
+        $('.container').css({'background-color': 'red'})
+      }
+      list.forEach(function(element, index) {
+        $('.' + element.id).children('.role-badge').css({'background-color': element.color}); 
+      });
+      $('.body').addClass(' day');
+      $('#phase').html("Phase: Day");
+      $('#supplemental').html("Everyone, please talk amongst yourselves, and then vote on whom to kill!")
       werewolfGame.winCondition();
       $(".tictac").html("")
       // var event = "discussion time";
@@ -108,8 +130,8 @@ var werewolfGame = {
     },
     mafiaWin: function() {
       alert("MAFIA WINS")
-      setTimeout(removeData(),5000)
-      setTimeout(location.reload(),5000)
+      removeData()
+      location.reload()
     },
     villagerWin: function() {
       alert("VILLAGERS WIN")
@@ -173,14 +195,19 @@ var nightPhase = {
     playerVote = -1
     pRole = list
     countdown(10, werewolfGame.checkDeath)
-    console.log("you are mafia")
+    //console.log("you are mafia")
 
   },
   bubblePop: function() {
+    var winloss = true;
     phase = "night";
-    $(".tictac").show();
     tictac();
-    countdown(10, werewolfGame.checkDeath);
+    if (winloss === true) {
+      countdown(10, werewolfGame.checkDeath);
+    } else {
+      werewolfGame.dead();
+      countdown(10, werewolfGame.checkDeath);
+    }
   }
 };
 var dayPhase = {
@@ -225,6 +252,7 @@ var popHMain = function() {
     $('.player-info').last().append($('<p></p>').html(element.name)).addClass(element.name);
     $('.player-tile').last().append($('<div></div>').addClass('votecount'));
     $('.votecount').last().append($('<p></p>').html(element.voteCount));
+    $('.' + element.id).children('.role-badge').css({'background-color': element.color}); 
   });
   pID = $('.container').find('.' + playerName).parent().attr('class').split(' ')[1]
 }
