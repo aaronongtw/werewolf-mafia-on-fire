@@ -81,7 +81,7 @@ var tictac = function () {
 
   //you don't need to check this conditional, these aren't the conditionals you're looking for
   var checkWin = function (x) {
-    if ( (inputMat[0] === inputMat[1] && inputMat[2] && x) || (inputMat[3] === inputMat[4] && inputMat[5] && x) || (inputMat[6] === inputMat[7] && inputMat[8] && x) || (inputMat[0] === inputMat[3] && inputMat[6] && x) || (inputMat[1] === inputMat[4] && inputMat[7] && x) || (inputMat[2] === inputMat[5] && inputMat[8] && x) || (inputMat[0] === inputMat[4] && inputMat[8] && x) || (inputMat[2] === inputMat[4] && inputMat[6] && x) ) {
+    if ( ((inputMat[0] === x) && (inputMat[1] === x) && (inputMat[2] === x)) || ((inputMat[3] === x) && (inputMat[4] === x) && (inputMat[5] === x)) || ((inputMat[6] === x) && (inputMat[7] === x) && (inputMat[8] === x)) || ((inputMat[0] === x) && (inputMat[3] === x) && (inputMat[6] === x)) || ((inputMat[1] === x) && (inputMat[4] === x) && (inputMat[7] === x)) || ((inputMat[2] === x) && (inputMat[5] === x) && (inputMat[8] === x)) || ((inputMat[0] === x) && (inputMat[4] === x) && (inputMat[8] === x)) || ((inputMat[2] === x) && (inputMat[4] === x) && (inputMat[6] === x)) ) {
       return true;
     } else {
       return false;
