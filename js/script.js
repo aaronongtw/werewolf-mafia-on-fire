@@ -112,7 +112,7 @@ var werewolfGame = {
       }
     },
     dayPhase: function() {
-      werewolfGame.winCondition();
+      setTimeout(werewolfGame.winCondition,3000);
       if (list[pID].status === 'dead') {
         $('body').html("You're Dead")
         $('body').css({'background-color': 'red'})
@@ -156,6 +156,7 @@ var werewolfGame = {
       } else if (phase === "night") {
         werewolfGame.dayPhase();
         //console.log("day phase")
+        //FUCK THE TIMING !!!!
       }
       else if (pRole[cID].voteCount === Math.ceil(pRole.length / 2) && phase === "day") {
         werewolfGame.dead();
