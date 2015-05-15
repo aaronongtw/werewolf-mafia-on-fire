@@ -112,6 +112,7 @@ var werewolfGame = {
       }
     },
     dayPhase: function() {
+      werewolfGame.winCondition();
       if (list[pID].status === 'dead') {
         $('body').html("You're Dead")
         $('body').css({'background-color': 'red'})
@@ -122,7 +123,7 @@ var werewolfGame = {
       $('body').addClass(' day');
       $('#phase').html("Phase: Day");
       $('#supplemental').html("Everyone, please talk amongst yourselves, and then vote on whom to kill! Drink a shot by the time round is over. Add a drink to king cup")
-      werewolfGame.winCondition();
+      
       $(".tictac").html("")
       // var event = "discussion time";
       // console.log(event)
