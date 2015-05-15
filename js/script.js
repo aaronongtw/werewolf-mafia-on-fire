@@ -95,12 +95,12 @@ var werewolfGame = {
         }
       });
       if (list[pID].status === 'dead') {
-        $('.container').html("You're Dead")
-        $('.container').css({'background-color': 'red'})
+        $('body').html("You're Dead")
+        $('body').css({'background-color': 'red'})
       }
 
 
-      $('.body').addClass(' night');
+      $('body').addClass(' night');
       $('#phase').html("Phase: Night");
       if (pRole[pID].role === "mafia") {
         $('#supplemental').html("You're one of the mafia, vote on a player to kill!")
@@ -113,13 +113,13 @@ var werewolfGame = {
     },
     dayPhase: function() {
       if (list[pID].status === 'dead') {
-        $('.container').html("You're Dead")
-        $('.container').css({'background-color': 'red'})
+        $('body').html("You're Dead")
+        $('body').css({'background-color': 'red'})
       }
       list.forEach(function(element, index) {
         $('.' + element.id).children('.role-badge').css({'background-color': element.color}); 
       });
-      $('.body').addClass(' day');
+      $('body').addClass(' day');
       $('#phase').html("Phase: Day");
       $('#supplemental').html("Everyone, please talk amongst yourselves, and then vote on whom to kill! Drink a shot by the time round is over. Add a drink to king cup")
       werewolfGame.winCondition();
