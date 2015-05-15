@@ -18,6 +18,9 @@ var dice = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+//Flag for player finish phase to sync all players again.
+
+
 var werewolfGame = {
 
     appendPlayer: function() {
