@@ -115,7 +115,7 @@ var werewolfGame = {
       }
     },
     dayPhase: function() {
-      setTimeout(werewolfGame.winCondition,3000);
+      setTimeout(werewolfGame.winCondition,4000);
       if (list[pID].status === 'dead') {
         $('body').html("You're Dead")
         $('body').css({'background-color': 'red'})
